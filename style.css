@@ -1,3 +1,4 @@
+
 :root {
     --bg-color: #121622;
     --card-bg: #1a2030;
@@ -15,14 +16,28 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Helvetica Neue",
+        Arial, sans-serif;
     line-height: 1.6;
 }
 
-/* 導覽列 */
+body.welcome-active {
+    overflow: hidden;
+}
+
+/* =========================
+   原本網站導覽列
+   ========================= */
+
 .navbar {
     background-color: rgba(18, 22, 34, 0.95);
     backdrop-filter: blur(10px);
@@ -102,11 +117,14 @@ body {
     opacity: 0.9;
 }
 
-/* 主內容區 */
+/* =========================
+   原本網站內容
+   ========================= */
+
 .main-content {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 120px 20px 60px 20px;
+    padding: 120px 20px 60px;
 }
 
 .poster-section {
@@ -151,7 +169,8 @@ body {
     color: var(--text-muted);
 }
 
-.about-card, .advocacy-box {
+.about-card,
+.advocacy-box {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 16px;
@@ -162,6 +181,10 @@ body {
 .advocacy-box h3 {
     color: var(--accent-color);
     margin-bottom: 15px;
+}
+
+.advocacy-box p + p {
+    margin-top: 10px;
 }
 
 .cards-grid {
@@ -215,12 +238,572 @@ body {
     margin: 4px 0;
 }
 
-/* RWD 響應式調整 */
+/* =========================
+   歡迎畫面
+   ========================= */
+
+.welcome-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    isolation: isolate;
+
+    background:
+        radial-gradient(
+            ellipse at 15% 15%,
+            rgba(255, 153, 102, 0.15),
+            transparent 45%
+        ),
+        radial-gradient(
+            ellipse at 85% 80%,
+            rgba(255, 94, 98, 0.12),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #171a2b 0%,
+            #202237 50%,
+            #121622 100%
+        );
+}
+
+/* 暖色光暈 */
+.welcome-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(75px);
+    pointer-events: none;
+    z-index: -1;
+    animation: glowFloat 9s ease-in-out infinite alternate;
+}
+
+.glow-one {
+    width: 330px;
+    height: 330px;
+    background: rgba(255, 140, 83, 0.18);
+    top: -100px;
+    left: -100px;
+}
+
+.glow-two {
+    width: 350px;
+    height: 350px;
+    background: rgba(255, 94, 98, 0.13);
+    bottom: 0;
+    right: -100px;
+    animation-delay: -3s;
+}
+
+.glow-three {
+    width: 250px;
+    height: 250px;
+    background: rgba(246, 216, 96, 0.08);
+    top: 40%;
+    right: 15%;
+    animation-delay: -5s;
+}
+
+/* 漂浮腳印 */
+.floating-paw {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    font-size: 30px;
+    opacity: 0.24;
+    animation: pawFloat 6s ease-in-out infinite;
+}
+
+.paw-1 {
+    top: 9%;
+    left: 5%;
+}
+
+.paw-2 {
+    top: 22%;
+    right: 7%;
+    font-size: 39px;
+    animation-delay: -1s;
+}
+
+.paw-3 {
+    top: 43%;
+    left: 3%;
+    font-size: 25px;
+    animation-delay: -2s;
+}
+
+.paw-4 {
+    top: 58%;
+    right: 4%;
+    font-size: 32px;
+    animation-delay: -3s;
+}
+
+.paw-5 {
+    bottom: 12%;
+    left: 8%;
+    font-size: 37px;
+    animation-delay: -4s;
+}
+
+.paw-6 {
+    bottom: 7%;
+    right: 10%;
+    font-size: 26px;
+    animation-delay: -5s;
+}
+
+.paw-7 {
+    top: 6%;
+    right: 27%;
+    font-size: 22px;
+    animation-delay: -2.5s;
+}
+
+.paw-8 {
+    bottom: 26%;
+    left: 20%;
+    font-size: 24px;
+    animation-delay: -1.5s;
+}
+
+/* 愛心 */
+.floating-heart {
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    color: #ff9c87;
+    opacity: 0.5;
+    font-size: 24px;
+    animation: heartFloat 5s ease-in-out infinite;
+}
+
+.heart-1 {
+    top: 18%;
+    left: 17%;
+}
+
+.heart-2 {
+    top: 68%;
+    right: 13%;
+    animation-delay: -2s;
+}
+
+.heart-3 {
+    bottom: 17%;
+    left: 28%;
+    animation-delay: -3s;
+}
+
+/* 歡迎首頁主要排版 */
+.welcome-content {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 1500px;
+    min-height: 100%;
+
+    margin: 0 auto;
+    padding: 30px 24px 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+}
+
+/* 標語 */
+.welcome-heading {
+    text-align: center;
+    animation: fadeUp 0.8s ease both;
+}
+
+.welcome-label {
+    display: inline-block;
+    padding: 7px 20px;
+    border-radius: 50px;
+    background: rgba(255, 140, 83, 0.12);
+    border: 1px solid rgba(255, 180, 130, 0.25);
+    color: #ffc58d;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.welcome-heading h1 {
+    font-size: clamp(1.45rem, 3.5vw, 2.7rem);
+    font-weight: 800;
+    color: #ffd29b;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 25px rgba(255, 140, 83, 0.22);
+}
+
+.welcome-heading p {
+    color: #e2d6d2;
+    font-size: clamp(0.85rem, 1.7vw, 1.05rem);
+    margin-top: 8px;
+    letter-spacing: 1px;
+}
+
+/* =========================
+   重點：海報滿版修正
+   ========================= */
+
+.welcome-poster-wrap {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 5px;
+
+    border-radius: 18px;
+
+    background: linear-gradient(
+        135deg,
+        #ffbd89,
+        #ff8c83,
+        #ffbd89
+    );
+
+    box-shadow:
+        0 15px 55px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(255, 140, 83, 0.12);
+
+    overflow: hidden;
+    animation: fadeUp 0.9s 0.1s ease both;
+}
+
+.welcome-poster {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-width: none;
+    max-height: none;
+
+    object-fit: contain;
+    border-radius: 13px;
+}
+
+/* 進入網站按鈕 */
+.welcome-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: fadeUp 0.9s 0.2s ease both;
+}
+
+.welcome-enter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    padding: 15px 36px;
+
+    background: linear-gradient(
+        135deg,
+        #ff9c59,
+        #ff626c
+    );
+
+    color: white;
+    border: none;
+    border-radius: 50px;
+
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+    box-shadow: 0 8px 28px rgba(255, 108, 95, 0.35);
+
+    animation: buttonPulse 2.8s ease-in-out infinite;
+
+    transition:
+        transform 0.25s,
+        box-shadow 0.25s;
+}
+
+.welcome-enter-btn:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 12px 35px rgba(255, 108, 95, 0.55);
+}
+
+.welcome-enter-btn:active {
+    transform: scale(0.97);
+}
+
+.welcome-enter-btn:focus-visible {
+    outline: 3px solid #f6d860;
+    outline-offset: 5px;
+}
+
+.button-paw {
+    display: inline-block;
+    animation: pawWiggle 2.5s ease-in-out infinite;
+}
+
+.button-arrow {
+    font-size: 1.2rem;
+}
+
+.welcome-action-caption {
+    color: #b9b5c4;
+    font-size: 0.83rem;
+    letter-spacing: 1px;
+}
+
+/* 活動特色標籤 */
+.welcome-features {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    animation: fadeUp 0.9s 0.3s ease both;
+}
+
+.welcome-features span {
+    padding: 9px 16px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(255, 190, 150, 0.2);
+    color: #ffe2cb;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: transform 0.25s, background 0.25s;
+}
+
+.welcome-features span:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 140, 83, 0.16);
+}
+
+/* 底部標語 */
+.welcome-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #c7aeb0;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.welcome-footer span {
+    opacity: 0.7;
+}
+
+/* 歡迎畫面淡出 */
+.welcome-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.6s ease,
+        visibility 0.6s ease;
+}
+
+/* =========================
+   動畫
+   ========================= */
+
+@keyframes pawFloat {
+    0%, 100% {
+        translate: 0 0;
+        opacity: 0.18;
+    }
+
+    50% {
+        translate: 0 -18px;
+        opacity: 0.4;
+    }
+}
+
+@keyframes heartFloat {
+    0%, 100% {
+        translate: 0 0;
+        scale: 1;
+    }
+
+    50% {
+        translate: 0 -15px;
+        scale: 1.18;
+    }
+}
+
+@keyframes glowFloat {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(25px, -20px) scale(1.12);
+    }
+}
+
+@keyframes buttonPulse {
+    0%, 100% {
+        box-shadow: 0 8px 25px rgba(255, 108, 95, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 8px 35px rgba(255, 108, 95, 0.6);
+    }
+}
+
+@keyframes pawWiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-18deg);
+    }
+
+    50% {
+        transform: rotate(12deg);
+    }
+
+    75% {
+        transform: rotate(-8deg);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   手機版
+   ========================= */
+
 @media (max-width: 768px) {
+
     .nav-links {
         display: none;
     }
+
     .nav-container {
         padding: 1rem;
+    }
+
+    .welcome-content {
+        padding: 28px 14px 35px;
+        gap: 20px;
+    }
+
+    .welcome-heading h1 {
+        font-size: clamp(1.35rem, 5vw, 1.9rem);
+        letter-spacing: 1px;
+    }
+
+    .welcome-heading p {
+        font-size: 0.85rem;
+    }
+
+    .welcome-label {
+        font-size: 0.68rem;
+        padding: 6px 13px;
+        letter-spacing: 0.5px;
+    }
+
+    .welcome-poster-wrap {
+        width: 100%;
+        padding: 3px;
+        border-radius: 12px;
+    }
+
+    .welcome-poster {
+        width: 100%;
+        height: auto;
+        max-height: none;
+        border-radius: 9px;
+    }
+
+    .welcome-enter-btn {
+        padding: 14px 30px;
+        font-size: 1rem;
+    }
+
+    .welcome-features {
+        gap: 8px;
+    }
+
+    .welcome-features span {
+        padding: 7px 11px;
+        font-size: 0.75rem;
+    }
+
+    .welcome-footer {
+        font-size: 0.75rem;
+        gap: 7px;
+    }
+
+    .floating-paw {
+        font-size: 22px;
+    }
+
+    .floating-heart {
+        font-size: 17px;
+    }
+
+    .glow-one,
+    .glow-two {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .cards-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .welcome-heading h1 {
+        font-size: 1.25rem;
+    }
+
+    .welcome-features span {
+        font-size: 0.7rem;
+    }
+}
+
+/* 尊重減少動畫偏好 */
+@media (prefers-reduced-motion: reduce) {
+
+    .welcome-screen *,
+    .welcome-screen *::before,
+    .welcome-screen *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    html {
+        scroll-behavior: auto;
     }
 }
